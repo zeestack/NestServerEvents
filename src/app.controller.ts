@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Sse } from '@nestjs/common';
 import { AppService } from './app.service';
 import { fromEvent, map } from 'rxjs';
-import type { DataItem } from './app.service';
 
 @Controller()
 export class AppController {
@@ -12,14 +11,14 @@ export class AppController {
     return this.appService.getList();
   }
 
-  @Post()
-  postItem(@Body() data: DataItem) {
+  @Post('webhook')
+  postItem(@Body() data: any) {
     return this.appService.postItem(data);
   }
 
   @Sse('Items')
   listenToTheNewUpdates() {
-    return fromEvent(this.appService.getEventEmitter(), 'newItem.added').pipe(
+    return fromEvent(this.appService.getEventEmitter(), 'event').pipe(
       map((item) => ({ data: { item } })),
     );
   }

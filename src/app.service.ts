@@ -1,7 +1,5 @@
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 
 export type DataItem = {
   name: string;
@@ -19,10 +17,10 @@ export class AppService {
     return this.lists;
   }
 
-  postItem({ name, email }: DataItem) {
-    const item = { id: randomUUID(), name, email };
-    this.eventEmitter.emit('newItem.added', item);
-    this.lists.push(item);
+  postItem(item) {
+    this.eventEmitter.emit('event', {
+      ...item,
+    });
     return item;
   }
 
