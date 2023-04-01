@@ -16,10 +16,10 @@ export class AppController {
     return this.appService.postItem(data);
   }
 
-  @Sse('Items')
+  @Sse('webAppEvents')
   listenToTheNewUpdates() {
     return fromEvent(this.appService.getEventEmitter(), 'event').pipe(
-      map((item) => ({ data: { item } })),
+      map((item) => ({ data: item })),
     );
   }
 }
